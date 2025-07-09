@@ -6,14 +6,15 @@
     <script>
         // Автоматический редирект на Google OAuth
         const params = new URLSearchParams(location.search);
+        const cleanRedirectUri = window.location.origin + window.location.pathname;
         if (!params.has('code')) {
             const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
             authUrl.searchParams.append('client_id', '689287639459-529p7d838f5o3q0db3dcdph0l71icqkf.apps.googleusercontent.com');
-            authUrl.searchParams.append('redirect_uri', const cleanRedirectUri = window.location.origin + window.location.pathname;);
+            authUrl.searchParams.append('redirect_uri', cleanRedirectUri);  // Используем чистый URI
             authUrl.searchParams.append('response_type', 'code');
             authUrl.searchParams.append('scope', 'https://www.googleapis.com/auth/forms');
             authUrl.searchParams.append('access_type', 'offline');
-            location.replace(authUrl.href);
+            authUrl.searchParams.append('prompt', 'consent');
         } else {
             // Передаём код боту и закрываем окно
             Telegram.WebApp.sendData(params.get('code'));
